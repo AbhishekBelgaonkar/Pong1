@@ -15,24 +15,14 @@ player = pygame.Rect(screen_width - 20, screen_height/2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_height/2 - 70, 10, 140)
 bg_color = (0, 0, 0)
 white = (255, 255, 255)
-def ball_animation():
-    global ball_speed_x, ball_speed_y
-    # increments the position of the ball with +ve and -ve values
-    ball.x += ball_speed_x
-    ball.y += ball_speed_y
-    # -ve speed induces backwards movement
-    if ball.top <= 0 or ball.bottom >= screen_height:
-        ball_speed_y *= -1
-    if ball.left <= 0 or ball.right >= screen_width:
-        ball_speed_x *= -1
-    if ball.colliderect(player) or ball.colliderect(opponent):
-        ball_speed_x *= -1
+   
 def player_animation():
     player.y += player_speed
     if player.top <= 0:
         player.top = 0
     if player.bottom >= screen_height:
         player.bottom = screen_height
+    print(player.top,player.bottom)
 def opponent_animation():
     opponent.y += opponent_speed
     if opponent.top <= 0:
@@ -73,7 +63,6 @@ while True:
                 opponent_speed -= 7
             if event.key == pygame.K_w:
                 opponent_speed += 7
-    ball_animation()
     player_animation()
     opponent_animation()
 
@@ -82,8 +71,7 @@ while True:
     screen.fill(bg_color)
     pygame.draw.rect(screen, white, player)
     pygame.draw.rect(screen, white, opponent)
-    pygame.draw.ellipse(screen, white, ball)
-    pygame.draw.aaline(screen, white, (screen_width/2, 0), (screen_width/2, screen_height))
+ 
     # updates the game window
     pygame.display.flip()
     clock.tick(65)
