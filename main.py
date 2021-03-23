@@ -47,13 +47,13 @@ def player_animation():
         opponent.bottom = screen_height
 def winlose():
     global ball_speed_x, ball_speed_y
-    ball.center = (screen_width/2,screen_height/2)
-    ball_speed_x *= random.choice((1,-1))
-    ball_speed_y *= random.choice((1,-1))
+    ball.center = (screen_width/2, screen_height/2)
+    ball_speed_x *= random.choice((1, -1))
+    ball_speed_y *= random.choice((1, -1))
 # the base speed of the ball
-ball_speed_x = 7 * random.choice((1,-1))
-ball_speed_y = 7 * random.choice((1,-1))
-#display text variables
+ball_speed_x = 7 * random.choice((1, -1))
+ball_speed_y = 7 * random.choice((1, -1))
+# display text variables
 player_score = 0
 opponent_score = 0
 game_font = pygame.font.Font("freesansbold.ttf", 32)
@@ -96,11 +96,14 @@ while True:
     pygame.draw.rect(screen, white, player)
     pygame.draw.rect(screen, white, opponent)
     pygame.draw.ellipse(screen, white, ball)
-    pygame.draw.aaline(screen, white, (screen_width/2, 0), (screen_width/2, screen_height)) # aaline stands for anti-aliasing line
+    pygame.draw.aaline(screen, white, (screen_width/2, 0), (screen_width/2, screen_height))
+    # aaline stands for anti-aliasing line
     # text
-    player_text = game_font.render(f"{player_score}", False, white) # the false is for anti-aliasing
+    player_text = game_font.render(f"{player_score}", False, white)
+    # the false is for anti-aliasing
     opponent_text = game_font.render(f"{opponent_score}", False, white)
-    screen.blit(player_text, (1500,20)) # this function says take the background surface and draw it onto the screen and position it at (x,y)
+    screen.blit(player_text, (1500, 20))
+    # this function says take the background surface and draw it onto the screen and position it at (x,y)
     screen.blit(opponent_text, (15, 20))
     # updates the game window
     pygame.display.flip()
