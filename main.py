@@ -3,6 +3,8 @@ import pygame
 import sys
 import random
 # initialize pygame
+mainClock = pygame.time.Clock()
+from pygame.locals import *
 pygame.init()
 clock = pygame.time.Clock()
 # making the screen
@@ -16,6 +18,7 @@ player = pygame.Rect(screen_width - 20, screen_height/2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_height/2 - 70, 10, 140)
 bg_color = (0, 0, 0)
 white = (255, 255, 255)
+font = pygame.font.SysFont(None, 20)
 def ball_animation():
     global ball_speed_x, ball_speed_y, player_score, opponent_score
     # increments the position of the ball with +ve and -ve values
@@ -62,49 +65,112 @@ game_font = pygame.font.Font("freesansbold.ttf", 32)
 player_speed = 0
 opponent_speed = 0
 # game loop
-while True:
-    # input
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                player_speed += 7
-            if event.key == pygame.K_UP:
-                player_speed -= 7
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN:
-                player_speed -= 7
-            if event.key == pygame.K_UP:
-                player_speed += 7
-        # player 2
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
-                opponent_speed += 7
-            if event.key == pygame.K_w:
-                opponent_speed -= 7
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_s:
-                opponent_speed -= 7
-            if event.key == pygame.K_w:
-                opponent_speed += 7
-    ball_animation()
-    player_animation()
-    # objects
-    screen.fill(bg_color)
-    pygame.draw.rect(screen, white, player)
-    pygame.draw.rect(screen, white, opponent)
-    pygame.draw.ellipse(screen, white, ball)
-    pygame.draw.aaline(screen, white, (screen_width/2, 0), (screen_width/2, screen_height))
-    # aaline stands for anti-aliasing line
-    # text
-    player_text = game_font.render(f"{player_score}", False, white)
-    # the false is for anti-aliasing
-    opponent_text = game_font.render(f"{opponent_score}", False, white)
-    screen.blit(player_text, (1500, 20))
-    # this function says take the background surface and draw it onto the screen and position it at (x,y)
-    screen.blit(opponent_text, (15, 20))
-    # updates the game window
-    pygame.display.flip()
-    clock.tick(60)
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface.blit(textobj, textrect)
+ 
+click = False
+ 
+def main_menu():
+    while True:
+ 
+        screen.fill((0,0,0))
+        draw_text('main menu', font, (255, 255, 255), screen, 20, 20)
+ 
+        mx, my = pygame.mouse.get_pos()
+ 
+        button_1 = pygame.Rect(50, 100, 200, 50)
+        button_2 = pygame.Rect(50, 200, 200, 50)
+        if button_1.collidepoint((mx, my)):
+            if click:
+                game()
+        if button_2.collidepoint((mx, my)):
+            if click:
+                options()
+        pygame.draw.rect(screen, (255, 0, 0), button_1)
+        pygame.draw.rect(screen, (255, 0, 0), button_2)
+ 
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+ 
+        pygame.display.update()
+        mainClock.tick(60)
+def game():
+    global player_speed
+    global opponent_speed
+    while True:
+        # input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    player_speed += 7
+                if event.key == pygame.K_UP:
+                    player_speed -= 7
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    player_speed -= 7
+                if event.key == pygame.K_UP:
+                    player_speed += 7
+            # player 2
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    opponent_speed += 7
+                if event.key == pygame.K_w:
+                    opponent_speed -= 7
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    opponent_speed -= 7
+                if event.key == pygame.K_w:
+                    opponent_speed += 7
+        ball_animation()
+        player_animation()
+        # objects
+        screen.fill(bg_color)
+        pygame.draw.rect(screen, white, player)
+        pygame.draw.rect(screen, white, opponent)
+        pygame.draw.ellipse(screen, white, ball)
+        pygame.draw.aaline(screen, white, (screen_width/2, 0), (screen_width/2, screen_height))
+        # aaline stands for anti-aliasing line
+        # text
+        player_text = game_font.render(f"{player_score}", False, white)
+        # the false is for anti-aliasing
+        opponent_text = game_font.render(f"{opponent_score}", False, white)
+        screen.blit(player_text, (1500, 20))
+        # this function says take the background surface and draw it onto the screen and position it at (x,y)
+        screen.blit(opponent_text, (15, 20))
+        # updates the game window
+        pygame.display.flip()
+        clock.tick(60)
+def options():
+    running = True
+    while running:
+        screen.fill((0,0,0))
+ 
+        draw_text('options', font, (255, 255, 255), screen, 20, 20)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+        
+        pygame.display.update()
+        mainClock.tick(60)
+ 
+main_menu()
