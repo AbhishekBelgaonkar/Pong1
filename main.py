@@ -18,7 +18,7 @@ player = pygame.Rect(screen_width - 20, screen_height/2 - 70, 10, 140)
 opponent = pygame.Rect(10, screen_height/2 - 70, 10, 140)
 bg_color = (0, 0, 0)
 white = (255, 255, 255)
-font = pygame.font.SysFont(None, 20)
+font = pygame.font.SysFont(None, 64)
 def ball_animation():
     global ball_speed_x, ball_speed_y, player_score, opponent_score
     # increments the position of the ball with +ve and -ve values
@@ -77,20 +77,23 @@ def main_menu():
     while True:
  
         screen.fill((0,0,0))
-        draw_text('main menu', font, (255, 255, 255), screen, 20, 20)
+        draw_text('Main Menu', font, (255, 255, 255), screen, 647, 810/2)
+        draw_text('Pong - By R9', font, (255, 255, 255), screen, 20, 20)
  
         mx, my = pygame.mouse.get_pos()
  
-        button_1 = pygame.Rect(50, 100, 200, 50)
-        button_2 = pygame.Rect(50, 200, 200, 50)
+        button_1 = pygame.Rect(665, 505, 200, 50)
+        button_2 = pygame.Rect(665, 605, 200, 50)
         if button_1.collidepoint((mx, my)):
             if click:
                 game()
         if button_2.collidepoint((mx, my)):
             if click:
                 options()
-        pygame.draw.rect(screen, (255, 0, 0), button_1)
-        pygame.draw.rect(screen, (255, 0, 0), button_2)
+        pygame.draw.rect(screen, (0, 0, 0), button_1)
+        pygame.draw.rect(screen, (0, 0, 0), button_2)
+        draw_text('Start', font, (255, 255, 255), screen, 665, 505)
+        draw_text('Options', font, (255, 255, 255), screen, 665, 605)
  
         click = False
         for event in pygame.event.get():
